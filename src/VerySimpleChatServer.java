@@ -17,7 +17,7 @@ public class VerySimpleChatServer {
 		Socket sock; 
 		int FinalIndex = 0;
 		
-//		������� ������ ��� ���������� � �����
+//		символьный поток для приема строк от клиента
 		public ClientHandler(Socket clientSocket) { 
 			try { 
 				sock = clientSocket; 
@@ -29,7 +29,8 @@ public class VerySimpleChatServer {
 			} 
 		} 
 		
-
+		//принимаем строки от каждого клиента(если только подключился к серву, заносим ник в дин.массив)
+		//и рассылаем всем клиентам
 		public void run() { 
 			String message; 
 			try { 
@@ -56,7 +57,7 @@ public class VerySimpleChatServer {
 			} 
 		}
 	}
-				
+	
 	public static void main (String[] args) {
 		
 		JFrame frameLogin = new JFrame("Дипломный проект(сервер)");
@@ -75,7 +76,7 @@ public class VerySimpleChatServer {
 			@SuppressWarnings("resource")
 			ServerSocket serverSock = new ServerSocket(5000);
 			
-
+			//при подключении нового клиента, в отдельном потоке читаем данные от него и рассылаем всем остальным
 			while(true) { 
 				
 				Socket clientSocket = serverSock.accept(); 
@@ -93,8 +94,7 @@ public class VerySimpleChatServer {
 		}
 	} 
 	
-//	����� �������� ��������� ���� ��������
-//	� ����� ���������� ���� ������
+//отправляем всем пользователям сообщение, в начале которого записываем все ники для отображения их в онлайне
 	public void tellEveryone(String message) { 
 		
 		Iterator<PrintWriter> itText = clientOutputStreams.iterator();
@@ -112,7 +112,6 @@ public class VerySimpleChatServer {
 			} catch(Exception ex) { 
 					ex.printStackTrace(); 
 			} 
-		}
-		
+		}		
 	}
 }
